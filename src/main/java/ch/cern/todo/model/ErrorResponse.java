@@ -9,9 +9,9 @@ import java.time.ZonedDateTime;
 @Setter
 public class ErrorResponse {
 
-  private String code;
+  private String error;
 
-  private String message;
+  private String details;
 
   private ZonedDateTime timestamp;
 }

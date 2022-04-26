@@ -11,7 +11,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "TASK_CATEGORIES")
 @Getter
 @Setter
-public class TaskCategory {
+public class TaskCategoryEntity {
 
   @Id
   @GeneratedValue(strategy = IDENTITY)

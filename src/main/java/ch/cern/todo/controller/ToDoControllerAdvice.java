@@ -18,8 +18,8 @@ public class ToDoControllerAdvice {
   @ResponseBody
   public ErrorResponse handleBadInputError(BadInputException e) {
     ErrorResponse errorResponse = new ErrorResponse();
-    errorResponse.setCode("001");
-    errorResponse.setMessage(e.getMessage());
+    errorResponse.setError("INVALID INPUT DATA");
+    errorResponse.setDetails(e.getMessage());
     errorResponse.setTimestamp(ZonedDateTime.now());
 
     return errorResponse;

@@ -1,9 +1,10 @@
-package ch.cern.todo.service;
+package ch.cern.todo.service.impl;
 
 import ch.cern.todo.data.TaskCategoryRepository;
-import ch.cern.todo.data.entity.TaskCategory;
+import ch.cern.todo.data.entity.TaskCategoryEntity;
 import ch.cern.todo.exception.BadInputException;
 import ch.cern.todo.model.Category;
+import ch.cern.todo.service.CategoryService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,10 +26,10 @@ public class CategoriesManager implements CategoryService {
   public List<Category> getAllCategories() {
     return repository.findAll().stream()
         .map(
-            taskCategory -> {
+                taskCategoryEntity -> {
               Category category = new Category();
-              category.setName(taskCategory.getName());
-              category.setDescription(taskCategory.getDescription());
+              category.setName(taskCategoryEntity.getName());
+              category.setDescription(taskCategoryEntity.getDescription());
 
               return category;
             })
@@ -46,15 +47,15 @@ public class CategoriesManager implements CategoryService {
       throw new BadInputException("A category exists already with the name in input.");
     }
 
-    TaskCategory taskCategoryToPersist = new TaskCategory();
-    taskCategoryToPersist.setName(category.getName());
-    taskCategoryToPersist.setDescription(category.getDescription());
+    TaskCategoryEntity taskCategoryEntityToPersist = new TaskCategoryEntity();
+    taskCategoryEntityToPersist.setName(category.getName());
+    taskCategoryEntityToPersist.setDescription(category.getDescription());
 
-    TaskCategory persistedTaskCategory = repository.save(taskCategoryToPersist);
+    TaskCategoryEntity persistedTaskCategoryEntity = repository.save(taskCategoryEntityToPersist);
 
     Category newCategory = new Category();
-    newCategory.setName(persistedTaskCategory.getName());
-    newCategory.setDescription(persistedTaskCategory.getDescription());
+    newCategory.setName(persistedTaskCategoryEntity.getName());
+    newCategory.setDescription(persistedTaskCategoryEntity.getDescription());
 
     return newCategory;
   }

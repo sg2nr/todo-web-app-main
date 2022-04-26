@@ -1,7 +1,6 @@
 package ch.cern.todo;
 
 import ch.cern.todo.model.Category;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.Customization;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -16,12 +15,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -35,18 +28,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 class CategoryControllerIntegrationTest {
 
+  private static final String PREFIX_FILE_NAME = "src/test/resources/ch/cern/todo/category/";
+  private static final String URL_CATEGORIES_API = "/categories";
   @Autowired private MockMvc mockMvc;
 
   @Test
   void test_get_categories_when_categories_exist() throws Exception {
 
     MvcResult mvcResult =
-        mockMvc.perform(get("/categories")).andDo(print()).andExpect(status().isOk()).andReturn();
+        mockMvc
+            .perform(get(URL_CATEGORIES_API))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andReturn();
 
     String actualResponse = mvcResult.getResponse().getContentAsString();
 
     String expectedResponse =
-        readFile("src/test/resources/ch/cern/todo/expected_response_get_categories.json");
+        TestUtils.readFile(PREFIX_FILE_NAME + "expected_response_get_categories.json");
 
     JSONAssert.assertEquals(actualResponse, expectedResponse, JSONCompareMode.LENIENT);
   }
@@ -61,20 +60,33 @@ class CategoryControllerIntegrationTest {
     // add it the first time -> OK
     mockMvc
         .perform(
-            post("/categories")
+            post(URL_CATEGORIES_API)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(jobCategory)))
+                .content(TestUtils.asJsonString(jobCategory)))
         .andDo(print())
         .andExpect(status().isOk());
 
     // add it the second time -> Error
-    mockMvc
-        .perform(
-            post("/categories")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(jobCategory)))
-        .andDo(print())
-        .andExpect(status().is4xxClientError());
+    MvcResult mvcResult =
+        mockMvc
+            .perform(
+                post(URL_CATEGORIES_API)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtils.asJsonString(jobCategory)))
+            .andDo(print())
+            .andExpect(status().is4xxClientError())
+            .andReturn();
+
+    String actualResponse = mvcResult.getResponse().getContentAsString();
+    String expectedResponse =
+        TestUtils.readFile(PREFIX_FILE_NAME + "expected_response_existing_category_name.json");
+
+    assertThat(actualResponse).isNotEmpty();
+    JSONAssert.assertEquals(
+        expectedResponse,
+        actualResponse,
+        new CustomComparator(
+            JSONCompareMode.LENIENT, new Customization("timestamp", (o1, o2) -> true)));
   }
 
   @Test
@@ -87,16 +99,16 @@ class CategoryControllerIntegrationTest {
     MvcResult mvcResult =
         mockMvc
             .perform(
-                post("/categories")
+                post(URL_CATEGORIES_API)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(asJsonString(emptyCategory)))
+                    .content(TestUtils.asJsonString(emptyCategory)))
             .andDo(print())
             .andExpect(status().is4xxClientError())
             .andReturn();
 
     String actualResponse = mvcResult.getResponse().getContentAsString();
     String expectedResponse =
-        readFile("src/test/resources/ch/cern/todo/expected_response_missing_category_name.json");
+        TestUtils.readFile(PREFIX_FILE_NAME + "expected_response_missing_category_name.json");
 
     assertThat(actualResponse).isNotEmpty();
     JSONAssert.assertEquals(
@@ -104,23 +116,5 @@ class CategoryControllerIntegrationTest {
         actualResponse,
         new CustomComparator(
             JSONCompareMode.LENIENT, new Customization("timestamp", (o1, o2) -> true)));
-  }
-
-  private static String readFile(String fileName) throws IOException {
-    Path path = Paths.get(fileName);
-
-    Stream<String> lines = Files.lines(path);
-    String expectedResponse = lines.collect(Collectors.joining("\n"));
-    lines.close();
-
-    return expectedResponse;
-  }
-
-  private static String asJsonString(Object obj) {
-    try {
-      return new ObjectMapper().writeValueAsString(obj);
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
   }
 }
