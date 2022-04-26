@@ -1,0 +1,22 @@
+DROP TABLE IF EXISTS TASKS;
+ALTER TABLE IF EXISTS TASK_CATEGORIES
+    DROP CONSTRAINT CATEGORY_NAME_UK;
+DROP TABLE IF EXISTS TASK_CATEGORIES;
+
+CREATE TABLE TASK_CATEGORIES
+(
+    id          IDENTITY PRIMARY KEY,
+    name        VARCHAR2(100) NOT NULL,
+    description VARCHAR2(500),
+    CONSTRAINT CATEGORY_NAME_UK UNIQUE (name)
+);
+
+CREATE TABLE TASKS
+(
+    id          IDENTITY PRIMARY KEY,
+    name        VARCHAR2(100)            NOT NULL,
+    description VARCHAR2(500),
+    deadline    TIMESTAMP WITH TIME ZONE NOT NULL,
+    category_id NUMERIC                  NOT NULL,
+    foreign key (category_id) references TASK_CATEGORIES (id)
+);
