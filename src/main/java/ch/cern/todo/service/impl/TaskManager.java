@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,6 +49,12 @@ public class TaskManager implements TaskService {
   }
 
   @Override
+  public Task getTask(String taskId) {
+    TaskEntity taskFromDataBase = getTaskEntityById(taskId);
+    return mapTask(taskFromDataBase);
+  }
+
+  @Override
   public Task addNewTask(Task task) {
 
     if (StringUtils.isBlank(task.getName())) {
@@ -78,8 +85,27 @@ public class TaskManager implements TaskService {
     return mapTask(persistedTask);
   }
 
+  public void deleteTask(String taskId) {
+    TaskEntity taskFromDataBase = getTaskEntityById(taskId);
+    taskRepository.delete(taskFromDataBase);
+  }
+
+  private TaskEntity getTaskEntityById(String taskId) {
+    if (StringUtils.isNumeric(taskId)) {
+      long numericTaskId = Long.parseLong(taskId);
+      return taskRepository
+          .findById(numericTaskId)
+          .orElseThrow(
+              () ->
+                  new BadInputException(String.format("Task with id %s does not exist.", taskId)));
+    } else {
+      throw new BadInputException("Invalid taskId. TaskId must be a numeric value.");
+    }
+  }
+
   private Task mapTask(TaskEntity taskEntity) {
     Task task = new Task();
+    task.setId(String.valueOf(taskEntity.getId()));
     task.setName(taskEntity.getName());
     task.setDescription(taskEntity.getDescription());
     task.setDeadline(taskEntity.getDeadline());

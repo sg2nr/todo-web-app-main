@@ -47,7 +47,7 @@ class CategoryControllerIntegrationTest {
     String expectedResponse =
         TestUtils.readFile(PREFIX_FILE_NAME + "expected_response_get_categories.json");
 
-    JSONAssert.assertEquals(actualResponse, expectedResponse, JSONCompareMode.LENIENT);
+    JSONAssert.assertEquals(expectedResponse, actualResponse, JSONCompareMode.LENIENT);
   }
 
   @Test

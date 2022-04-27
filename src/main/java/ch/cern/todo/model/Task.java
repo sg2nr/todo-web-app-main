@@ -10,6 +10,8 @@ import java.time.ZonedDateTime;
 @Setter
 public class Task {
 
+  private String id;
+
   @JsonProperty(required = true)
   private String name;
 

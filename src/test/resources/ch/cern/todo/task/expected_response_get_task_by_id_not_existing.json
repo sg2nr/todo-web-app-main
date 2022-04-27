@@ -1,0 +1,5 @@
+{
+  "error": "INVALID INPUT DATA",
+  "details": "Task with id 100 does not exist.",
+  "timestamp": "2022-04-27T15:48:37.6497081+02:00"
+}

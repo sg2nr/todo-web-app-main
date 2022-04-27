@@ -10,5 +10,9 @@ public interface TaskService {
 
   List<Task> getTasksByCategory(String categoryName);
 
+  Task getTask(String taskId);
+
   Task addNewTask(Task task);
+
+  void deleteTask(String taskId);
 }
