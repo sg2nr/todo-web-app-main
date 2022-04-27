@@ -15,8 +15,6 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import javax.transaction.Transactional;
 
-import java.io.IOException;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -45,7 +43,7 @@ class TaskControllerIntegrationTest {
     String expectedResponse =
         TestUtils.readFile(PREFIX_FILE_NAME + "expected_response_get_all_tasks.json");
 
-    JSONAssert.assertEquals(actualResponse, expectedResponse, JSONCompareMode.LENIENT);
+    JSONAssert.assertEquals(actualResponse, expectedResponse, JSONCompareMode.STRICT_ORDER);
   }
 
   @Test
@@ -63,7 +61,7 @@ class TaskControllerIntegrationTest {
     String expectedResponse =
         TestUtils.readFile(PREFIX_FILE_NAME + "expected_response_get_other_tasks.json");
 
-    JSONAssert.assertEquals(actualResponse, expectedResponse, JSONCompareMode.LENIENT);
+    JSONAssert.assertEquals(actualResponse, expectedResponse, JSONCompareMode.STRICT_ORDER);
   }
 
   @Test

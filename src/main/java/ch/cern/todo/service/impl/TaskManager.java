@@ -9,6 +9,7 @@ import ch.cern.todo.model.Task;
 import ch.cern.todo.service.TaskService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class TaskManager implements TaskService {
 
   @Override
   public List<Task> getTasks() {
-    List<TaskEntity> taskEntities = taskRepository.findAll();
+    List<TaskEntity> taskEntities = taskRepository.findAll(Sort.by(Sort.Direction.ASC, "deadline"));
 
     return taskEntities.stream().map(this::mapTask).collect(Collectors.toList());
   }
