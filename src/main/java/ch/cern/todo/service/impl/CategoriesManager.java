@@ -25,16 +25,7 @@ public class CategoriesManager implements CategoryService {
 
   @Override
   public List<Category> getAllCategories() {
-    return repository.findAll().stream()
-        .map(
-            taskCategoryEntity -> {
-              Category category = new Category();
-              category.setName(taskCategoryEntity.getName());
-              category.setDescription(taskCategoryEntity.getDescription());
-
-              return category;
-            })
-        .collect(Collectors.toList());
+    return repository.findAll().stream().map(this::mapCategory).collect(Collectors.toList());
   }
 
   @Override
@@ -54,22 +45,13 @@ public class CategoriesManager implements CategoryService {
 
     TaskCategoryEntity persistedTaskCategoryEntity = repository.save(taskCategoryEntityToPersist);
 
-    Category newCategory = new Category();
-    newCategory.setName(persistedTaskCategoryEntity.getName());
-    newCategory.setDescription(persistedTaskCategoryEntity.getDescription());
-
-    return newCategory;
+    return mapCategory(persistedTaskCategoryEntity);
   }
 
   @Override
-  public void deleteCategory(String categoryName) throws OperationNotPossibleException, BadInputException {
-    TaskCategoryEntity taskCategoryEntity =
-        repository
-            .findByName(categoryName)
-            .orElseThrow(
-                () ->
-                    new BadInputException(
-                        String.format("Category with name %s does not exist.", categoryName)));
+  public void deleteCategory(String categoryName)
+      throws OperationNotPossibleException, BadInputException {
+    TaskCategoryEntity taskCategoryEntity = getTaskCategoryEntity(categoryName);
 
     if (isNotDeletable(categoryName)) {
       throw new OperationNotPossibleException(
@@ -81,7 +63,42 @@ public class CategoriesManager implements CategoryService {
     repository.delete(taskCategoryEntity);
   }
 
+  private TaskCategoryEntity getTaskCategoryEntity(String categoryName) throws BadInputException {
+    return repository
+        .findByName(categoryName)
+        .orElseThrow(
+            () ->
+                new BadInputException(
+                    String.format("Category with name %s does not exist.", categoryName)));
+  }
+
   private boolean isNotDeletable(String categoryName) {
     return repository.findTaskCategoryEntityWithoutTasks(categoryName).isEmpty();
+  }
+
+  @Override
+  public Category updateCategory(String categoryName, Category category) throws BadInputException {
+
+    TaskCategoryEntity taskCategoryEntity = getTaskCategoryEntity(categoryName);
+
+    String newName = category.getName();
+    if (StringUtils.isNotBlank(newName)) {
+      taskCategoryEntity.setName(newName);
+    }
+    String newDescription = category.getDescription();
+    if (StringUtils.isNotBlank(newDescription)) {
+      taskCategoryEntity.setDescription(newDescription);
+    }
+
+    TaskCategoryEntity persistedTaskCategoryEntity = repository.save(taskCategoryEntity);
+
+    return mapCategory(persistedTaskCategoryEntity);
+  }
+
+  private Category mapCategory(TaskCategoryEntity persistedTaskCategoryEntity) {
+    Category newCategory = new Category();
+    newCategory.setName(persistedTaskCategoryEntity.getName());
+    newCategory.setDescription(persistedTaskCategoryEntity.getDescription());
+    return newCategory;
   }
 }

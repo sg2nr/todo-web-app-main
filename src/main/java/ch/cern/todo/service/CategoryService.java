@@ -13,4 +13,6 @@ public interface CategoryService {
   Category addNewCategory(Category category) throws BadInputException;
 
   void deleteCategory(String categoryName) throws OperationNotPossibleException, BadInputException;
+
+  Category updateCategory(String categoryName, Category category) throws BadInputException;
 }

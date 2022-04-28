@@ -17,9 +17,9 @@ import org.springframework.test.web.servlet.MvcResult;
 import javax.transaction.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -30,6 +30,7 @@ class CategoryControllerIntegrationTest {
 
   private static final String PREFIX_FILE_NAME = "src/test/resources/ch/cern/todo/category/";
   private static final String URL_CATEGORIES_API = "/categories";
+  private static final String FOO_CATEGORY = "foo";
   @Autowired private MockMvc mockMvc;
 
   @Test
@@ -87,6 +88,23 @@ class CategoryControllerIntegrationTest {
         actualResponse,
         new CustomComparator(
             JSONCompareMode.LENIENT, new Customization("timestamp", (o1, o2) -> true)));
+  }
+
+  @Test
+  void test_update_category() throws Exception {
+    Category patchRequest = new Category();
+    String newDescription = "A category for random tasks.";
+    patchRequest.setDescription(newDescription);
+
+    mockMvc
+        .perform(
+            patch(URL_CATEGORIES_API + "/" + FOO_CATEGORY)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtils.asJsonString(patchRequest)))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.name").value(FOO_CATEGORY))
+        .andExpect(jsonPath("$.description").value(newDescription));
   }
 
   @Test

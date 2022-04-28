@@ -34,7 +34,14 @@ public class CategoryController {
 
   @DeleteMapping("/{categoryName}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteCategory(@PathVariable String categoryName) throws OperationNotPossibleException, BadInputException {
+  public void deleteCategory(@PathVariable String categoryName)
+      throws OperationNotPossibleException, BadInputException {
     categoryService.deleteCategory(categoryName);
+  }
+
+  @PatchMapping("/{categoryName}")
+  public Category updateCategory(
+      @PathVariable String categoryName, @RequestBody Category updatedCategory) throws BadInputException {
+    return categoryService.updateCategory(categoryName, updatedCategory);
   }
 }
