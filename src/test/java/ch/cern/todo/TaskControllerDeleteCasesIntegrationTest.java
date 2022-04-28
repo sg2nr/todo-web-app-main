@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import javax.transaction.Transactional;
 
+import static ch.cern.todo.TestUtils.TASKS_URL_API;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -24,8 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @Transactional
 class TaskControllerDeleteCasesIntegrationTest {
-
-  private static final String TASKS_URL_API = "/tasks";
 
   private static final String PREFIX_FILE_NAME = "src/test/resources/ch/cern/todo/task/";
   private static final String TASK_ID_1 = "1";

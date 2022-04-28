@@ -1,8 +1,8 @@
 package ch.cern.todo.controller;
 
 import ch.cern.todo.exception.BadInputException;
-import ch.cern.todo.model.TaskQueryCriteria;
 import ch.cern.todo.model.Task;
+import ch.cern.todo.model.TaskQueryCriteria;
 import ch.cern.todo.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,8 +22,7 @@ public class TodoController {
   }
 
   @GetMapping
-  public List<Task> getTasks(
-          @RequestBody TaskQueryCriteria taskQueryCriteria) {
+  public List<Task> getTasks(@RequestBody TaskQueryCriteria taskQueryCriteria) {
     return taskService.getTasks(taskQueryCriteria);
   }
 
@@ -42,5 +41,10 @@ public class TodoController {
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deleteTask(@PathVariable String taskId) throws BadInputException {
     taskService.deleteTask(taskId);
+  }
+
+  @PatchMapping("/{taskId}")
+  public Task updateTask(@PathVariable String taskId, @RequestBody Task updatedTask) throws BadInputException {
+    return taskService.updateTask(taskId, updatedTask);
   }
 }

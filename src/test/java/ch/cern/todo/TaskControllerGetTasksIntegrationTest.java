@@ -1,6 +1,5 @@
 package ch.cern.todo;
 
-import ch.cern.todo.model.TaskQueryCriteria;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.Customization;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -9,15 +8,13 @@ import org.skyscreamer.jsonassert.comparator.CustomComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
 
+import static ch.cern.todo.TestUtils.TASKS_URL_API;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -28,7 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 class TaskControllerGetTasksIntegrationTest {
 
-  private static final String TASKS_URL_API = "/tasks";
   private static final String PREFIX_FILE_NAME = "src/test/resources/ch/cern/todo/task/";
 
   @Autowired private MockMvc mockMvc;

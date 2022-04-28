@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import javax.transaction.Transactional;
 import java.util.stream.Stream;
 
+import static ch.cern.todo.TestUtils.TASKS_URL_API;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -29,8 +30,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @Transactional
 class TaskControllerAddNewTaskIntegrationTest {
-
-  private static final String TASKS_URL_API = "/tasks";
 
   private static final String PREFIX_FILE_NAME = "src/test/resources/ch/cern/todo/task/";
   @Autowired private MockMvc mockMvc;
@@ -63,7 +62,7 @@ class TaskControllerAddNewTaskIntegrationTest {
 
     MvcResult mvcResult =
         mockMvc
-            .perform(post("/tasks").contentType(MediaType.APPLICATION_JSON).content(request))
+            .perform(post(TASKS_URL_API).contentType(MediaType.APPLICATION_JSON).content(request))
             .andDo(print())
             .andExpect(status().is4xxClientError())
             .andReturn();

@@ -25,8 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 class CategoryControllerDeleteCasesIntegrationTest {
 
-  private static final String CATEGORIES_URL_API = "/categories";
-
   private static final String CATEGORY_WITHOUT_TASK = "foo";
 
   private static final String CATEGORY_WITH_TASK = "wellness";
@@ -39,7 +37,7 @@ class CategoryControllerDeleteCasesIntegrationTest {
   void test_delete_category_when_it_does_not_have_tasks_it_should_return_status_204()
       throws Exception {
     mockMvc
-        .perform(delete(CATEGORIES_URL_API + "/" + CATEGORY_WITHOUT_TASK))
+        .perform(delete(TestUtils.CATEGORIES_URL_API + "/" + CATEGORY_WITHOUT_TASK))
         .andDo(print())
         .andExpect(status().is(204));
   }
@@ -48,7 +46,7 @@ class CategoryControllerDeleteCasesIntegrationTest {
   void test_delete_category_when_it_has_tasks_it_should_return_an_error() throws Exception {
     MvcResult mvcResult =
         mockMvc
-            .perform(delete(CATEGORIES_URL_API + "/" + CATEGORY_WITH_TASK))
+            .perform(delete(TestUtils.CATEGORIES_URL_API + "/" + CATEGORY_WITH_TASK))
             .andDo(print())
             .andExpect(status().is4xxClientError())
             .andReturn();
@@ -70,7 +68,7 @@ class CategoryControllerDeleteCasesIntegrationTest {
   void test_delete_category_when_it_does_not_exist_it_should_return_an_error() throws Exception {
     MvcResult mvcResult =
         mockMvc
-            .perform(delete(CATEGORIES_URL_API + "/" + CATEGORY_INVALID))
+            .perform(delete(TestUtils.CATEGORIES_URL_API + "/" + CATEGORY_INVALID))
             .andDo(print())
             .andExpect(status().is4xxClientError())
             .andReturn();

@@ -103,6 +103,30 @@ public class TaskManager implements TaskService {
     taskRepository.delete(taskFromDataBase);
   }
 
+  @Override
+  public Task updateTask(String taskId, Task updatedTask) throws BadInputException {
+
+    TaskEntity taskEntityById = getTaskEntityById(taskId);
+
+    String newName = updatedTask.getName();
+    if (StringUtils.isNotBlank(newName)) {
+      taskEntityById.setName(newName);
+    }
+
+    String newDescription = updatedTask.getDescription();
+    if (StringUtils.isNotBlank(newDescription)) {
+      taskEntityById.setDescription(newDescription);
+    }
+
+    ZonedDateTime newDeadline = updatedTask.getDeadline();
+    if (newDeadline != null) {
+      taskEntityById.setDeadline(newDeadline);
+    }
+
+    TaskEntity persistedTaskEntity = taskRepository.save(taskEntityById);
+    return mapTask(persistedTaskEntity);
+  }
+
   private TaskEntity getTaskEntityById(String taskId) throws BadInputException {
     if (StringUtils.isNumeric(taskId)) {
       long numericTaskId = Long.parseLong(taskId);

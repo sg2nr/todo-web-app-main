@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import javax.transaction.Transactional;
 import java.util.stream.Stream;
 
+import static ch.cern.todo.TestUtils.TASKS_URL_API;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -27,7 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 class TaskControllerQueryTasksIntegrationTest {
 
-  private static final String TASKS_URL_API = "/tasks";
   private static final String PREFIX_FILE_NAME = "src/test/resources/ch/cern/todo/task/";
 
   @Autowired private MockMvc mockMvc;

@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CategoryControllerIntegrationTest {
 
   private static final String PREFIX_FILE_NAME = "src/test/resources/ch/cern/todo/category/";
-  private static final String URL_CATEGORIES_API = "/categories";
+
   private static final String FOO_CATEGORY = "foo";
   @Autowired private MockMvc mockMvc;
 
@@ -38,7 +38,7 @@ class CategoryControllerIntegrationTest {
 
     MvcResult mvcResult =
         mockMvc
-            .perform(get(URL_CATEGORIES_API))
+            .perform(get(TestUtils.CATEGORIES_URL_API))
             .andDo(print())
             .andExpect(status().isOk())
             .andReturn();
@@ -61,7 +61,7 @@ class CategoryControllerIntegrationTest {
     // add it the first time -> OK
     mockMvc
         .perform(
-            post(URL_CATEGORIES_API)
+            post(TestUtils.CATEGORIES_URL_API)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(TestUtils.asJsonString(jobCategory)))
         .andDo(print())
@@ -71,7 +71,7 @@ class CategoryControllerIntegrationTest {
     MvcResult mvcResult =
         mockMvc
             .perform(
-                post(URL_CATEGORIES_API)
+                post(TestUtils.CATEGORIES_URL_API)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtils.asJsonString(jobCategory)))
             .andDo(print())
@@ -98,7 +98,7 @@ class CategoryControllerIntegrationTest {
 
     mockMvc
         .perform(
-            patch(URL_CATEGORIES_API + "/" + FOO_CATEGORY)
+            patch(TestUtils.CATEGORIES_URL_API + "/" + FOO_CATEGORY)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(TestUtils.asJsonString(patchRequest)))
         .andDo(print())
@@ -117,7 +117,7 @@ class CategoryControllerIntegrationTest {
     MvcResult mvcResult =
         mockMvc
             .perform(
-                post(URL_CATEGORIES_API)
+                post(TestUtils.CATEGORIES_URL_API)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtils.asJsonString(emptyCategory)))
             .andDo(print())
