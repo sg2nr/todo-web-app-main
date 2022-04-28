@@ -32,7 +32,7 @@ public class TaskManager implements TaskService {
   }
 
   @Override
-  public Task getTask(String taskId) {
+  public Task getTask(String taskId) throws BadInputException {
     TaskEntity taskFromDataBase = getTaskEntityById(taskId);
     return mapTask(taskFromDataBase);
   }
@@ -64,8 +64,7 @@ public class TaskManager implements TaskService {
   }
 
   @Override
-  public Task addNewTask(Task task) {
-
+  public Task addNewTask(Task task) throws BadInputException {
     if (StringUtils.isBlank(task.getName())) {
       throw new BadInputException("Missing task name.");
     }
@@ -85,7 +84,7 @@ public class TaskManager implements TaskService {
     return mapTask(persistedTask);
   }
 
-  private TaskEntity mapTaskEntity(Task task) {
+  private TaskEntity mapTaskEntity(Task task) throws BadInputException {
     TaskCategoryEntity correspondingCategory =
         taskCategoryRepository
             .findByName(task.getCategory())
@@ -99,12 +98,12 @@ public class TaskManager implements TaskService {
     return taskToPersist;
   }
 
-  public void deleteTask(String taskId) {
+  public void deleteTask(String taskId) throws BadInputException {
     TaskEntity taskFromDataBase = getTaskEntityById(taskId);
     taskRepository.delete(taskFromDataBase);
   }
 
-  private TaskEntity getTaskEntityById(String taskId) {
+  private TaskEntity getTaskEntityById(String taskId) throws BadInputException {
     if (StringUtils.isNumeric(taskId)) {
       long numericTaskId = Long.parseLong(taskId);
       return taskRepository

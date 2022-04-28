@@ -1,7 +1,8 @@
 INSERT INTO TASK_CATEGORIES (name, description)
 VALUES ('other', 'A category for everything.'),
        ('finance', 'my activities related to money and business.'),
-       ('wellness', 'Need to rest sometimes.');
+       ('wellness', 'Need to rest sometimes.'),
+       ('foo', 'useless category');
 
 INSERT INTO TASKS (name, description, deadline, category_id)
 VALUES ('order pizza', 'order 5 pizzas for tonight.', '2022-05-01T18:59:00+02:00', 1),

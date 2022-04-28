@@ -3,6 +3,7 @@ package ch.cern.todo.service.impl;
 import ch.cern.todo.data.TaskCategoryRepository;
 import ch.cern.todo.data.entity.TaskCategoryEntity;
 import ch.cern.todo.exception.BadInputException;
+import ch.cern.todo.exception.OperationNotPossibleException;
 import ch.cern.todo.model.Category;
 import ch.cern.todo.service.CategoryService;
 import org.apache.commons.lang3.StringUtils;
@@ -26,7 +27,7 @@ public class CategoriesManager implements CategoryService {
   public List<Category> getAllCategories() {
     return repository.findAll().stream()
         .map(
-                taskCategoryEntity -> {
+            taskCategoryEntity -> {
               Category category = new Category();
               category.setName(taskCategoryEntity.getName());
               category.setDescription(taskCategoryEntity.getDescription());
@@ -37,7 +38,7 @@ public class CategoriesManager implements CategoryService {
   }
 
   @Override
-  public Category addNewCategory(Category category) {
+  public Category addNewCategory(Category category) throws BadInputException {
 
     if (StringUtils.isBlank(category.getName())) {
       throw new BadInputException("Missing name for a new category.");
@@ -58,5 +59,29 @@ public class CategoriesManager implements CategoryService {
     newCategory.setDescription(persistedTaskCategoryEntity.getDescription());
 
     return newCategory;
+  }
+
+  @Override
+  public void deleteCategory(String categoryName) throws OperationNotPossibleException, BadInputException {
+    TaskCategoryEntity taskCategoryEntity =
+        repository
+            .findByName(categoryName)
+            .orElseThrow(
+                () ->
+                    new BadInputException(
+                        String.format("Category with name %s does not exist.", categoryName)));
+
+    if (isNotDeletable(categoryName)) {
+      throw new OperationNotPossibleException(
+          String.format(
+              "Impossible to delete category with name %s, since there are still tasks associated to it.",
+              categoryName));
+    }
+
+    repository.delete(taskCategoryEntity);
+  }
+
+  private boolean isNotDeletable(String categoryName) {
+    return repository.findTaskCategoryEntityWithoutTasks(categoryName).isEmpty();
   }
 }

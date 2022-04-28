@@ -10,5 +10,9 @@
   {
     "name": "wellness",
     "description": "Need to rest sometimes."
+  },
+  {
+    "name": "foo",
+    "description": "useless category"
   }
 ]

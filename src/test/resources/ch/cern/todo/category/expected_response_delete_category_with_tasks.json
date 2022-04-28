@@ -1,0 +1,5 @@
+{
+  "error": "OPERATION NOT POSSIBLE",
+  "details": "Impossible to delete category with name wellness, since there are still tasks associated to it.",
+  "timestamp": "2022-04-28T14:46:06.7622904+02:00"
+}
