@@ -6,14 +6,16 @@ import ch.cern.todo.data.entity.TaskCategoryEntity;
 import ch.cern.todo.data.entity.TaskEntity;
 import ch.cern.todo.exception.BadInputException;
 import ch.cern.todo.model.Task;
+import ch.cern.todo.model.TaskQueryCriteria;
 import ch.cern.todo.service.TaskService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,28 +32,35 @@ public class TaskManager implements TaskService {
   }
 
   @Override
-  public List<Task> getTasks() {
-    List<TaskEntity> taskEntities = taskRepository.findAll(Sort.by(Sort.Direction.ASC, "deadline"));
+  public Task getTask(String taskId) {
+    TaskEntity taskFromDataBase = getTaskEntityById(taskId);
+    return mapTask(taskFromDataBase);
+  }
+
+  @Override
+  public List<Task> getTasks(TaskQueryCriteria taskQueryCriteria) {
+    ZonedDateTime beforeDate = taskQueryCriteria.getBeforeDeadline();
+    List<TaskEntity> taskEntities =
+        retrieveTaskEntities(taskQueryCriteria.getCategories(), beforeDate);
 
     return taskEntities.stream().map(this::mapTask).collect(Collectors.toList());
   }
 
-  @Override
-  public List<Task> getTasksByCategory(String categoryName) {
-    if (StringUtils.isBlank(categoryName)) {
-      throw new BadInputException("Missing category name.");
+  public List<TaskEntity> retrieveTaskEntities(
+      List<String> categoryNames, ZonedDateTime beforeDate) {
+    if (CollectionUtils.isNotEmpty(categoryNames) && beforeDate != null) {
+      return taskRepository.getTaskEntitiesByCategoryAndBeforeDeadline(categoryNames, beforeDate);
     }
 
-    List<TaskEntity> taskEntitiesByCategory =
-        taskRepository.getTaskEntitiesByCategory(categoryName);
+    if (CollectionUtils.isNotEmpty(categoryNames)) {
+      return taskRepository.getTaskEntitiesByCategory(categoryNames);
+    }
 
-    return taskEntitiesByCategory.stream().map(this::mapTask).collect(Collectors.toList());
-  }
+    if (beforeDate != null) {
+      return taskRepository.getTaskEntitiesBeforeDeadline(beforeDate);
+    }
 
-  @Override
-  public Task getTask(String taskId) {
-    TaskEntity taskFromDataBase = getTaskEntityById(taskId);
-    return mapTask(taskFromDataBase);
+    return taskRepository.findAll(Sort.by(Sort.Direction.ASC, "deadline"));
   }
 
   @Override
@@ -69,6 +78,14 @@ public class TaskManager implements TaskService {
       throw new BadInputException("Missing task category.");
     }
 
+    TaskEntity taskToPersist = mapTaskEntity(task);
+
+    TaskEntity persistedTask = taskRepository.save(taskToPersist);
+
+    return mapTask(persistedTask);
+  }
+
+  private TaskEntity mapTaskEntity(Task task) {
     TaskCategoryEntity correspondingCategory =
         taskCategoryRepository
             .findByName(task.getCategory())
@@ -79,10 +96,7 @@ public class TaskManager implements TaskService {
     taskToPersist.setDescription(task.getDescription());
     taskToPersist.setDeadline(task.getDeadline());
     taskToPersist.setCategory(correspondingCategory);
-
-    TaskEntity persistedTask = taskRepository.save(taskToPersist);
-
-    return mapTask(persistedTask);
+    return taskToPersist;
   }
 
   public void deleteTask(String taskId) {

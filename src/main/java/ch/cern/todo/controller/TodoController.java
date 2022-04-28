@@ -1,8 +1,8 @@
 package ch.cern.todo.controller;
 
+import ch.cern.todo.model.TaskQueryCriteria;
 import ch.cern.todo.model.Task;
 import ch.cern.todo.service.TaskService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -22,12 +22,8 @@ public class TodoController {
 
   @GetMapping
   public List<Task> getTasks(
-      @RequestParam(name = "category", required = false) String categoryName) {
-    if (StringUtils.isBlank(categoryName)) {
-      return taskService.getTasks();
-    } else {
-      return taskService.getTasksByCategory(categoryName);
-    }
+          @RequestBody TaskQueryCriteria taskQueryCriteria) {
+    return taskService.getTasks(taskQueryCriteria);
   }
 
   @GetMapping("/{taskId}")

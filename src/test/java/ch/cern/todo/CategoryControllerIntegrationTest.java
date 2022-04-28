@@ -64,7 +64,7 @@ class CategoryControllerIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(TestUtils.asJsonString(jobCategory)))
         .andDo(print())
-        .andExpect(status().isOk());
+        .andExpect(status().is(201));
 
     // add it the second time -> Error
     MvcResult mvcResult =

@@ -1,0 +1,16 @@
+[
+  {
+    "id": "3",
+    "name": "check budget",
+    "description": "connect to the bank website and check transactions of last month.",
+    "deadline": "2022-04-28T09:00:00+02:00",
+    "category": "finance"
+  },
+  {
+    "id": "2",
+    "name": "repair car",
+    "description": "bring the car to the garage",
+    "deadline": "2022-04-30T07:59:00+02:00",
+    "category": "other"
+  }
+]

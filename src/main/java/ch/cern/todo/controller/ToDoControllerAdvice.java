@@ -9,16 +9,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeParseException;
 
 @ControllerAdvice
 public class ToDoControllerAdvice {
+
+  private static final String INVALID_INPUT_DATA = "INVALID INPUT DATA";
 
   @ExceptionHandler(BadInputException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ResponseBody
   public ErrorResponse handleBadInputError(BadInputException e) {
     ErrorResponse errorResponse = new ErrorResponse();
-    errorResponse.setError("INVALID INPUT DATA");
+    errorResponse.setError(INVALID_INPUT_DATA);
     errorResponse.setDetails(e.getMessage());
     errorResponse.setTimestamp(ZonedDateTime.now());
 

@@ -1,5 +1,6 @@
 package ch.cern.todo;
 
+import ch.cern.todo.model.TaskQueryCriteria;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.Customization;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -8,11 +9,14 @@ import org.skyscreamer.jsonassert.comparator.CustomComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -28,38 +32,6 @@ class TaskControllerGetTasksIntegrationTest {
   private static final String PREFIX_FILE_NAME = "src/test/resources/ch/cern/todo/task/";
 
   @Autowired private MockMvc mockMvc;
-
-  @Test
-  void test_get_tasks_when_tasks_exist() throws Exception {
-
-    MvcResult mvcResult =
-        mockMvc.perform(get(TASKS_URL_API)).andDo(print()).andExpect(status().isOk()).andReturn();
-
-    String actualResponse = mvcResult.getResponse().getContentAsString();
-
-    String expectedResponse =
-        TestUtils.readFile(PREFIX_FILE_NAME + "expected_response_get_all_tasks.json");
-
-    JSONAssert.assertEquals(expectedResponse, actualResponse, JSONCompareMode.STRICT_ORDER);
-  }
-
-  @Test
-  void test_get_tasks_of_category_other() throws Exception {
-
-    MvcResult mvcResult =
-        mockMvc
-            .perform(get(TASKS_URL_API + "?category=other"))
-            .andDo(print())
-            .andExpect(status().isOk())
-            .andReturn();
-
-    String actualResponse = mvcResult.getResponse().getContentAsString();
-
-    String expectedResponse =
-        TestUtils.readFile(PREFIX_FILE_NAME + "expected_response_get_other_tasks.json");
-
-    JSONAssert.assertEquals(expectedResponse, actualResponse, JSONCompareMode.STRICT_ORDER);
-  }
 
   @Test
   void test_get_task_by_id() throws Exception {
