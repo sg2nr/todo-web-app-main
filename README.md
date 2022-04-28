@@ -275,6 +275,28 @@ GET /tasks/1
     "timestamp": "2022-04-28T18:37:39.0395251+02:00"
 }
 ```
+### Add new task
+#### Request
+````
+POST /tasks
+
+{
+    "name": "jogging",
+    "deadline": "2022-04-29T16:00:00+02:00",
+    "category": "sport"
+}
+````
+#### Response
+`201 Created`
+```
+{
+    "id": "3",
+    "name": "jogging",
+    "description": null,
+    "deadline": "2022-04-29T14:00:00Z",
+    "category": "sport"
+}
+```
 ### Update task
 #### Request
 ````
