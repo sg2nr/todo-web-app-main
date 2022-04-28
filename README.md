@@ -7,7 +7,7 @@
 ## API description
 
 Here you can find an overview of the operations provided by **ToDo-WebApp**.
-You can find some examples ready-to-execute on the attached Postman collection (path: resources/Todo API.postman_collection.json).
+You can find some example ready-to-execute on the attached Postman collection (path: resources/Todo API.postman_collection.json).
 
 ### Retrieve all categories
 #### Request
@@ -84,6 +84,8 @@ DELETE /categories/useless
 `204 No Content`
 #### Possible errors
 ```
+400 Bad Request
+
 {
     "error": "INVALID INPUT DATA",
     "details": "Category with name e-commerce does not exist.",
