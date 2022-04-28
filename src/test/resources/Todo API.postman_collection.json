@@ -1,0 +1,1081 @@
+{
+	"info": {
+		"_postman_id": "8b8098d1-0236-4aa8-838c-b82f300d7f1c",
+		"name": "Todo API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add new task category",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 201\", () => {\r",
+							"    pm.response.to.have.status(201);\r",
+							"    pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"sport\",\r\n    \"description\": \"healthy activities\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/categories",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add again the same category",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status is 400\", () => {\r",
+							"    pm.response.to.have.status(400);\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Invalid input data error returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"error\");\r",
+							"\r",
+							"    let error = response.error;\r",
+							"    pm.expect(error).is.equal(\"INVALID INPUT DATA\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Error details returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"details\");\r",
+							"\r",
+							"    let error = response.details;\r",
+							"    pm.expect(error).is.equal(\"A category exists already with the name in input.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"sport\",\r\n    \"description\": \"healthy activities\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/categories",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add new task category \"shopping\"",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 201\", () => {\r",
+							"    pm.response.to.have.status(201);\r",
+							"    pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"shopping\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/categories",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add description to category \"shopping\"",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"description\": \"List of activities related to shopping and e-commerce.\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/categories/shopping",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"categories",
+						"shopping"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add new task category \"finance\"",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 201\", () => {\r",
+							"    pm.response.to.have.status(201);\r",
+							"    pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"finance\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/categories",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add new task category \"useless\"",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 201\", () => {\r",
+							"    pm.response.to.have.status(201);\r",
+							"    pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"useless\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/categories",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve all task categories",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/categories",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add new task for category \"shopping\"",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 201\", () => {\r",
+							"    pm.response.to.have.status(201);\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"let response = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Id is returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"id\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Name is returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"name\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Description is returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"description\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Deadline is returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"deadline\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Category is returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"category\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"buy food\",\r\n    \"description\": \"everything we need for the party\",\r\n    \"deadline\": \"2022-05-04T23:59:00+02:00\",\r\n    \"category\": \"shopping\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/tasks",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add new task for category \"shopping\"",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 201\", () => {\r",
+							"    pm.response.to.have.status(201);\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"let response = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Id is returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"id\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Name is returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"name\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Description is returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"description\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Deadline is returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"deadline\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Category is returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"category\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"go to supermarket\",\r\n    \"description\": \"food for the weekend\",\r\n    \"deadline\": \"2022-04-29T23:59:00+02:00\",\r\n    \"category\": \"shopping\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/tasks",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add new task for category \"sport\"",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 201\", () => {\r",
+							"    pm.response.to.have.status(201);\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"let response = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Id is returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"id\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Name is returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"name\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Deadline is returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"deadline\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Category is returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"category\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"jogging\",\r\n    \"deadline\": \"2022-04-29T16:00:00+02:00\",\r\n    \"category\": \"sport\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/tasks",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add new task for category \"finance\"",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 201\", () => {\r",
+							"    pm.response.to.have.status(201);\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"let response = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Id is returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"id\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Name is returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"name\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Deadline is returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"deadline\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Category is returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"category\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"bank transfer\",\r\n    \"deadline\": \"2022-04-28T20:00:00+02:00\",\r\n    \"description\": \"do bank transfer to Bob\",\r\n    \"category\": \"finance\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/tasks",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve Shopping tasks",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"categories\": [\r\n        \"shopping\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/tasks",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve Shopping  and Sport tasks",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"categories\": [\"shopping\", \"sport\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/tasks",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Rename category \"shopping\"  to \" e-commerce\"",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"e-commerce\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/categories/shopping",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"categories",
+						"shopping"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve E-commerce tasks before deadline",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"categories\": [\r\n        \"e-commerce\"\r\n    ],\r\n    \"beforeDeadline\": \"2022-04-30T00:00+02:00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/tasks",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve all tasks",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/tasks",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve all tasks before deadline",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"beforeDeadline\": \"2022-05-01T00:00+02:00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/tasks",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get task with id=1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"let response = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Id is returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"id\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Name is returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"name\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Description is returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"description\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Deadline is returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"deadline\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Category is returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"category\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/tasks/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tasks",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update task with id=1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"let response = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Id is returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"id\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Name is returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"name\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Description is returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"description\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Deadline is returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"deadline\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Category is returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"category\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"buy chips\",\r\n    \"description\": \"chips for the party\",\r\n    \"deadline\": \"2022-05-05T23:59:00+02:00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/tasks/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tasks",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete task with id=1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 204\", () => {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/tasks/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tasks",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete task category - error case",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status is 400\", () => {\r",
+							"    pm.response.to.have.status(400);\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Operation not possible error returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"error\");\r",
+							"\r",
+							"    let error = response.error;\r",
+							"    pm.expect(error).is.equal(\"OPERATION NOT POSSIBLE\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Error details returned\", () => {\r",
+							"    pm.expect(response).to.have.property(\"details\");\r",
+							"\r",
+							"    let error = response.details;\r",
+							"    pm.expect(error).is.equal(\"Impossible to delete category with name e-commerce, since there are still tasks associated to it.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/categories/e-commerce",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"categories",
+						"e-commerce"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete task category",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 204\", () => {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/categories/useless",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"categories",
+						"useless"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
